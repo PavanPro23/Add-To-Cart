@@ -1,24 +1,137 @@
-<link rel="stylesheet" href="styles.css">
+<link href="styles.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <div class="main">
     <div class="head">
         <h1 class="logo">Add To Cart</h1>
-        <div class="cart">
+        <div class="Cart">
             <i class="fa-solid fa-cart-shopping"></i>
             <p id="count">0</p>
         </div>
     </div>
 </div>
 
+
 <div class="container">
     <div id="root"></div>
     <div class="sidebar">
         <h1>My Cart</h1>
-        <div class="cartItem"></div>
+        <div id="cartItem"></div>
         <div class="foot">
             <h3>Total</h3>
-            <h2 id="total">.00</h2>
+            <h2 id="total"></h2>
         </div>
     </div>
 </div>
+
+
+<script>
+
+    const products=[
+        {
+            id:0,
+            image:"oneip.png",
+            title:"Iphone",
+            price:2000
+        },
+        {
+            id:1,
+            image:"twoip.png",
+            title:"Smg",
+            price:3000
+        },
+        {
+            id:2,
+            image:"threeip.png",
+            title:"Mi",
+            price:4000
+        },
+        {
+            id:3,
+            image:"fourip.png",
+            title:"Rel",
+            price:5000
+        },
+        {
+            id:4,
+            image:"oneip.png",
+            title:"Mi",
+            price:6000
+        },
+        {
+            id:5,
+            image:"twoip.png",
+            title:"Smg",
+            price:7000
+        }
+    ]
+
+    const category=[...new Set(products.map((item)=>{
+        return item
+    }))]
+
+    let i=0
+
+    document.getElementById('root').innerHTML=category.map((item)=>{
+        var{image,title,price}=item
+        return(
+            `<div class="box">
+                <div class="image-box">
+                    <img src="${image}"></img>
+                    </div>
+                    <div class="button">
+                        <h2>${title}</h2>
+                        <h3>${price}</h3>`+
+                        "<button onclick='addCart("+(i++)+")'>AddToCart</button>"+
+                        `</div>
+                </div>`
+        )
+
+    }).join("")
+
+
+    let cart=[]
+
+    function addCart(a){
+        cart.push({...category[a]})
+        displayCart()
+    }
+
+    function delElement(a){
+        cart.splice(a,1)
+        displayCart()
+    }
+
+    function displayCart(a){
+        let d=0,total=0
+
+    document.getElementById('count').innerHTML=cart.length
+
+    if(cart.length==0){
+        document.getElementById('cartItem').innerHTML="Your Cart Empty"
+        document.getElementById('total').innerHTML=".00"
+        
+    }else{
+        document.getElementById('cartItem').innerHTML=cart.map((items)=>{
+            var{image,price,title}=items
+            total=total+price
+            document.getElementById('total').innerHTML=total+".00"
+
+            return(
+                `<div class='cart-item'>
+                    <div class='row-img'>
+                        <img src="${image}"></img>
+                        </div>
+                        <p>${title}</p>
+                        <h2>${price}</h2>`+
+                        "<i class='fa-solid fa-trash' onclick='delElement("+(d--)+")'></i></div>"
+            )
+        }).join("")
+
+    }
+    
+    }
+
+
+
+    </script>
